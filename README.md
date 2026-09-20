@@ -156,7 +156,7 @@ model (about 80 MB) downloads once on first run.
 ## Project structure
 
 ```
-main.py            LangGraph pipeline (state, four nodes, scoring and coaching schemas)
+main.py            LangGraph pipeline (state, five nodes, scoring and coaching schemas)
 app.py             Gradio UI
 kb/                five policy documents for the fictional company
 samples/           ten sample transcripts

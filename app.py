@@ -293,7 +293,7 @@ def _warm_up() -> None:
 
 if __name__ == "__main__":
     threading.Thread(target=_warm_up, daemon=True).start()
-    port = os.getenv("PORT")  # set by hosting platforms such as Railway
+    port = os.getenv("PORT")  # set by hosting platforms such as Render or Google Cloud Run
     demo.launch(
         server_name="0.0.0.0" if port else None,
         server_port=int(port) if port else None,
