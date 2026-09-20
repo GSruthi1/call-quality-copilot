@@ -111,7 +111,7 @@ Compared on samples 02, 07, 08 and 09 (same review flags on every model):
 |---|---|---|
 | Claude Haiku 4.5 (default) | about $0.013 | Scores efficiency more leniently (sample 08: 4 instead of 2) |
 | Claude Sonnet 5 | about $0.039 | Closest to Opus |
-| Claude Opus 5 | not costed precisely, several times Haiku | Reference scores above |
+| Claude Opus 5 | not measured; list price is 5x Haiku per token | Reference scores above |
 
 Costs are computed from measured token counts. Set `ANTHROPIC_MODEL` to change the model.
 
@@ -147,7 +147,7 @@ python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 export ANTHROPIC_API_KEY=sk-ant-...
 python app.py                                   # Gradio UI at http://127.0.0.1:7860
-python main.py samples/08_service_outage.txt    # or run it from the terminal (prompts for the review)
+python main.py samples/08_service_outage.txt    # or run it in a terminal; a flagged call prompts for a review
 ```
 
 The Chroma index is built on first use in `.chroma/` and rebuilt automatically when `kb/` changes. The embedding
@@ -161,14 +161,6 @@ app.py             Gradio UI
 kb/                five policy documents for the fictional company
 samples/           ten sample transcripts
 docs/demo.gif      the demo above
-Dockerfile, railway.json   container deploy config (not currently hosted)
+Dockerfile         container image
 requirements.txt
 ```
-
-## Deployment note
-
-Not hosted. Hugging Face Spaces now requires a PRO subscription for Gradio apps, and the roughly 650 MB peak
-memory exceeds the 512 MB free tiers on other hosts. The app runs anywhere with roughly 1 GB of RAM; a Dockerfile is
-included but has not been built or deployed. To put it on a Hugging Face Space, add the Space YAML block
-(`sdk: gradio`, `python_version: "3.11"`, `app_file: app.py`) to the top of this README and set `ANTHROPIC_API_KEY` as
-a Space secret.
