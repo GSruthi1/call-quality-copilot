@@ -1,0 +1,13 @@
+Agent: Thank you for calling Nextel Communications, my name is Priya. This call may be recorded for quality and training purposes. How can I help you today?
+Customer: Hi, I keep running out of data on my Basic plan. I'd like to know my options.
+Agent: Happy to help with that. First, may I have your account PIN and the last four digits of the SSN on the account?
+Customer: PIN 3309, last four 1187.
+Agent: Thank you, you're verified. Running out of data mid-month is annoying, so let's find something that fits. You're on Nextel Basic at $30 a month with 5 GB. Nextel Plus is $50 a month with 25 GB, and Unlimited Max is $75 with unlimited data, although speeds may be reduced after 50 GB during network congestion. How much do you use?
+Customer: I probably use 15 to 20 GB. And I travel to Canada sometimes.
+Agent: Then Nextel Plus fits well. It gives you 25 GB, and roaming in Canada and Mexico is included at no extra cost on Plus.
+Customer: Nice. If I switch today, when does it start, and is there a fee?
+Agent: There's no fee to change plans. Because this is an upgrade, it can take effect immediately, with the price prorated for the rest of this cycle.
+Customer: Great, do it.
+Agent: Done. You're now on Nextel Plus. You'll see the prorated amount on your next bill. Is there anything else I can help you with today?
+Customer: No, that's all.
+Agent: Thank you for choosing Nextel. Have a great day.

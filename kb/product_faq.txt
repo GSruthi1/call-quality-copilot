@@ -1,0 +1,25 @@
+NEXTEL COMMUNICATIONS - PRODUCT AND PLAN FAQ (Rev. 5.1)
+
+## Mobile plans and pricing
+Nextel Basic is $30 per month with 5 GB of high-speed data. Nextel Plus is $50 per month with 25 GB of high-speed data. Nextel Unlimited Max is $75 per month with unlimited data; speeds may be reduced after 50 GB of usage in a billing cycle during network congestion. All plans include unlimited talk and text within the United States. Prices exclude taxes and regulatory fees.
+
+## Plan changes
+Customers may change plans at any time. A plan change takes effect at the start of the next billing cycle unless the customer is upgrading, in which case it can take effect immediately with the price prorated. There is no fee for changing plans.
+
+## Fees
+The activation fee for a new line is $35. A late payment fee of $10 applies when a payment is more than 5 days past due. A replacement SIM card costs $10. An early termination fee of $75 applies if a customer on a 12-month agreement cancels before the term ends.
+
+## International and roaming
+International calling and roaming is not included in any plan. The International Add-on costs $10 per month and includes 100 minutes and 2 GB of data in over 60 countries. Roaming in Canada and Mexico is included on Nextel Plus and Unlimited Max at no additional cost.
+
+## Device financing
+Devices can be financed over 24 months at 0% APR with approved credit. If a customer cancels service, the remaining device balance becomes due in full. Customers can pay off a device balance at any time without penalty.
+
+## HomeConnect router troubleshooting
+A solid green light on a Nextel HomeConnect router means the connection is healthy. A blinking amber light means the router is searching for the network; the customer should restart the router by unplugging it for 30 seconds. A solid red light means there is no signal or a hardware fault; if a restart does not fix it after two attempts, the agent must schedule a technician visit (free of charge within 30 days of installation).
+
+## Wi-Fi calling
+Wi-Fi calling is free, works on supported devices, and can be turned on in phone settings. Emergency calls over Wi-Fi calling require the customer to register an emergency address.
+
+## Voicemail and number transfer
+Visual voicemail stores up to 40 messages for 30 days. Customers can transfer their number from another carrier at no charge; the transfer normally completes within 24 hours.

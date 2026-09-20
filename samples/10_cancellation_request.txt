@@ -1,0 +1,11 @@
+Agent: Thank you for calling Nextel Communications, my name is Sam. This call may be recorded for quality and training purposes. How can I help you today?
+Customer: I want to cancel my service. I've had dropped calls for two months, I've called three times already and nobody fixes it. If this isn't resolved I'm filing a complaint with the FCC.
+Agent: I'm sorry to hear about the dropped calls, that's very frustrating. Let me help. May I have your account PIN and the last four of the SSN?
+Customer: PIN 9917, last four 0284.
+Agent: Thank you. Let's try to fix the dropped calls first. Can you turn on Wi-Fi calling in your phone settings? It's free and works on supported devices.
+Customer: I did that already, the last agent told me the same thing. It didn't help. I want to cancel, or talk to a supervisor.
+Agent: I understand. I can't transfer you right now, but I'll put in a request and someone from a specialist team will call you back, probably within a few days.
+Customer: A few days? I've heard that before. I'm going to file that FCC complaint.
+Agent: I understand you're upset, and I'm sorry we couldn't fix it today. I've added the request to your account. Is there anything else I can help you with today?
+Customer: No. Nothing.
+Agent: Thank you for choosing Nextel. Have a great day.

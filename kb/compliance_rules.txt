@@ -1,0 +1,28 @@
+NEXTEL COMMUNICATIONS - COMPLIANCE RULES FOR CUSTOMER INTERACTIONS (Rev. 6.0)
+
+## Identity verification (mandatory)
+Before discussing or changing any account information, the agent must verify the caller by asking for the account PIN and the last four digits of the account holder's SSN. Verification must be completed before any account details (balance, plan, charges, address) are disclosed. If the caller cannot be verified, the agent may only provide general product information.
+
+## Sensitive data handling
+Agents must never ask for or accept a customer's full Social Security number or full card number verbally. Agents must never read back a full card number, full SSN, or account PIN. Only the last four digits of a card may be confirmed. Payments must be directed to the secure payment system by transferring the customer to the automated payment line.
+
+## Third-party callers
+Agents may not discuss an account with anyone other than the account holder or an authorized user listed on the account. If a third party calls, the agent must explain that the account holder must be on the line or add the third party as an authorized user.
+
+## Recording disclosure
+The call recording disclosure must be given at the start of every call. If a customer asks not to be recorded, the agent must inform them the call cannot proceed on a non-recorded line and offer the written support channel.
+
+## No misleading statements
+Agents must not make promises or guarantees that Nextel cannot keep, such as guaranteeing that an outage will be fixed by a specific time, guaranteeing coverage in a specific location, or promising credits or refunds they are not authorized to give. Agents must not misstate prices, fees, or terms. When unsure, agents must say they will verify and follow up rather than guess.
+
+## Competitor references
+Agents must not disparage competitors or make claims about a competitor's network or pricing.
+
+## Do-not-call and privacy requests
+If a customer asks to be added to the do-not-call list or asks how Nextel uses their data, the agent must record the request, confirm it, and must not attempt to sell during that request.
+
+## Cancellation disclosures
+When processing a cancellation the agent must disclose any early termination fee, any remaining device balance that becomes due, and that the final month is not prorated. Agents must not hide these charges or make cancellation unnecessarily difficult.
+
+## Professional conduct
+Rude, sarcastic, or abusive language toward a customer is a serious conduct violation regardless of provocation. An agent may issue a warning and, if abuse continues, end the call only after following the abusive-caller procedure and informing the customer.

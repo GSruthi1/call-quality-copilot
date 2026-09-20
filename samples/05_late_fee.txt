@@ -1,0 +1,11 @@
+Agent: Nextel, this is Jordan, how can I help?
+Customer: Hi, I got charged a late fee on my bill and I always pay on time. I'm pretty upset about it.
+Agent: I hear you, that's frustrating when you feel you've done everything right. Let me look into it. Can I get your account PIN and the last four of your SSN?
+Customer: PIN 7714 and last four 3350.
+Agent: Thanks, you're verified. Okay, I see the $10 late fee. Your payment was due on the 1st and it posted on the 8th, so it was more than 5 days past due. That's when the late fee applies.
+Customer: Ugh, I didn't realize it went through late. My bank had an issue.
+Agent: That happens. I can't remove it as an error since the payment did post late, but I can apply a one-time courtesy credit of $10 to offset it. That's within my authority.
+Customer: That would help, thank you.
+Agent: Done, it will show on your next bill. If you want to avoid this in the future you can turn on autopay.
+Customer: Good idea, I'll do that.
+Agent: Alright, you're all set. Bye.

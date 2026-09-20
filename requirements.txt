@@ -1,0 +1,6 @@
+langgraph
+anthropic
+langchain-chroma
+chromadb
+gradio
+pydantic

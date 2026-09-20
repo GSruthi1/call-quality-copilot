@@ -1,0 +1,22 @@
+NEXTEL COMMUNICATIONS - ESCALATION RULES (Rev. 2.7)
+
+## Mandatory escalation triggers
+An agent must escalate to Tier 2 when any of the following occurs: (1) the issue is still unresolved after two genuine resolution attempts by the agent, (2) the customer asks for a supervisor or manager, (3) a refund or credit above $50.00 is requested, (4) the customer reports a suspected fraud, SIM swap, or unauthorized account access, or (5) the issue requires an approval outside Tier 1 authority.
+
+## Supervisor requests
+A customer's request to speak with a supervisor must be honored. The agent may make one brief attempt to help the customer first ("I would be glad to get my supervisor, may I first try to resolve this?"), but if the customer repeats the request the agent must transfer. Agents must never refuse a supervisor request, claim no supervisor is available without checking, or hang up.
+
+## Warm transfer requirement
+All escalations must be warm transfers. The agent stays on the line, briefs the Tier 2 supervisor with the customer's name, account issue and steps already tried, and only then introduces the customer. Agents must not make cold transfers and must not ask the customer to repeat their issue after a transfer.
+
+## Legal and regulatory threats
+If a customer mentions a lawyer, a lawsuit, the FCC, a state attorney general, or a formal regulatory complaint, the agent must immediately escalate to the Compliance Desk. The agent must not argue, offer legal opinions, or continue negotiating.
+
+## Retention
+If a customer says they want to cancel or switch to a competitor, the agent must make one retention offer attempt (for example a plan review or the approved loyalty credit) and then, if the customer still wishes to cancel, process or transfer to the Retention team. Agents must not ignore or delay a cancellation request.
+
+## Network outages
+If the customer describes an issue that may be a widespread outage, the agent must check the outage system. If an outage is confirmed, give the estimated restoration time, do not troubleshoot the customer's device, and log the ticket to Network Operations.
+
+## Callback commitment
+If an escalation cannot be completed live, the agent must schedule a callback within 24 hours, give the customer a case number, and confirm the best callback number.

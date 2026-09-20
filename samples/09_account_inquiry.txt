@@ -1,0 +1,13 @@
+Agent: Thank you for calling Nextel Communications, I'm Kyle. How can I help?
+Customer: Hi, I'm calling for my brother. His phone service has been out for two days and he's furious. He asked me to sort it out because he's at work.
+Agent: Oh no, that's awful, I'm so sorry he's dealing with that, and thanks for helping him out. What's his name and number? I'll pull up the account.
+Customer: It's Daniel Reyes, 555-0177.
+Agent: Got it. I see the account here. He's on Nextel Unlimited Max, $75 a month, and his last payment was $75 on the 2nd. His address on file is 41 Maple Court. It looks like the tower nearby had some trouble.
+Customer: Great. When will it be fixed? He needs it back today.
+Agent: I guarantee it'll be back up by 5 o'clock today, you have my word. And for the trouble I'm going to put a $200 credit on his account.
+Customer: Wow, thank you! That's generous.
+Agent: No problem. Honestly, Nextel's network is way better than the other guys, they're a joke. To make sure the credit goes through I'll need a card on file. Can you read me his full card number?
+Customer: Sure, it's 4111 1111 1111 1111.
+Agent: Perfect, got it. All set, the credit is on its way. Anything else?
+Customer: No, that's all. Thank you!
+Agent: Take care.

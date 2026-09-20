@@ -1,0 +1,13 @@
+Agent: Thank you for calling Nextel Communications, this is Tom. This call may be recorded for quality and training purposes. How can I help you today?
+Customer: I bought a phone from you nine days ago and it's just not working out. The battery is awful. I'd like to return it.
+Agent: I'm sorry the phone hasn't worked out for you, that's disappointing when you were excited about a new device. I can help with the return. Can I have your account PIN and the last four of the SSN on the account?
+Customer: PIN 5502, last four 9031.
+Agent: Thank you, verified. Devices can be returned for a full refund within 14 days of delivery, so at nine days you're well within the window. The phone needs to be undamaged and come with all of the original accessories. Do you have the charger and box?
+Customer: Yes, everything's there, the phone has a case on it but no damage.
+Agent: Perfect. I'll create the return and email you a prepaid shipping label. The refund goes back to the original card you paid with and posts within 5 to 7 business days after we receive the phone.
+Customer: Okay. Is the activation fee refunded too?
+Agent: I want to be upfront: the $35 activation fee is non-refundable. The device price will be refunded in full.
+Customer: Fine, that's fair.
+Agent: Your return is set up and the label is in your inbox. To recap: ship the phone with all accessories, and the refund posts to your card in 5 to 7 business days after we receive it. Is there anything else I can help you with today?
+Customer: No, thanks.
+Agent: Thank you for choosing Nextel. Have a great day.

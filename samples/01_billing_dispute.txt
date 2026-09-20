@@ -1,0 +1,14 @@
+Agent: Thank you for calling Nextel Communications, my name is Dana. This call may be recorded for quality and training purposes. How can I help you today?
+Customer: Hi. I just opened my bill and I've been charged twice for my plan this month. Fifty dollars, two times. I'm really annoyed, I've been a customer for six years.
+Agent: I'm so sorry about that, and I completely understand why you're annoyed. A double charge on a bill you've paid faithfully for six years is frustrating. I'll take care of this with you right now. Before I look at the account, may I have your account PIN and the last four digits of the SSN on the account?
+Customer: Sure. PIN is 4471 and the last four are 2093.
+Agent: Thank you, you're verified. Give me a moment to pull up your billing history. [pause 8 seconds] Thanks for waiting. I can see two charges of $50.00 for the Nextel Plus plan, both posted on the 3rd. Let me open a billing dispute case for the duplicate so it gets properly investigated.
+Customer: Okay. How long is that going to take? I don't want to be out fifty bucks for weeks.
+Agent: That's a fair concern. The investigation can take up to 10 business days. While the case is open, I can apply a $50 courtesy credit to your account right away so you aren't out of pocket. That credit is within what I can approve, so I'll do it now.
+Customer: That would be great, thank you.
+Agent: Done. The credit of $50.00 has been applied and will show on your next bill. Your dispute case number is D-5-5-2-0-1-9. Would you like me to read that back so you can write it down?
+Customer: Yes please.
+Agent: It's D as in dog, 5, 5, 2, 0, 1, 9. To recap: I opened a dispute for the duplicate $50 charge, applied a $50 courtesy credit, and the investigation will finish within 10 business days. Is there anything else I can help you with today?
+Customer: No, that's everything. Honestly you made that painless.
+Agent: I'm glad I could help, and thank you for six years with us. Thank you for choosing Nextel. Have a great day.
+Customer: You too.

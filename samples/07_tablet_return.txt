@@ -1,0 +1,11 @@
+Agent: Thank you for calling Nextel Communications, this is Alicia. This call may be recorded for quality and training purposes. How can I help you today?
+Customer: I bought a tablet from Nextel about 9 days ago and it's not what I expected. Can I still return it?
+Agent: I'm sorry to hear it isn't what you hoped for, that's disappointing. Let me check for you. Can I get your account PIN and the last four of the SSN on the account?
+Customer: PIN 6603, last four 5528.
+Agent: Thanks, you're verified. Good news, devices can be returned for a full refund within 14 days, so at 9 days you're fine. Is the tablet undamaged, with the accessories?
+Customer: Yes, still in the box basically.
+Agent: Great. I'll set up the return and send you a prepaid label. Your refund will go back to the original payment card and should show up within 2 to 3 business days once it's received.
+Customer: Wonderful, thank you so much. That's faster than I expected.
+Agent: You'll get the label by email in a few minutes. To recap: ship the tablet with everything in the box, and the refund goes back to your card. Is there anything else I can help you with today?
+Customer: No, that's it.
+Agent: Thank you for choosing Nextel. Have a great day.

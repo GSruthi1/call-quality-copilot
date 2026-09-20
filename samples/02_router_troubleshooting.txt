@@ -1,0 +1,15 @@
+Agent: Thank you for calling Nextel Communications, this is Marcus. This call may be recorded for quality and training purposes. How can I help you today?
+Customer: My home internet keeps dropping. The router has a blinking orange light on it.
+Agent: I'm sorry you're dealing with that, dropped internet is a pain. I can help. First I need to verify you. Can I get your account PIN and the last four of the SSN on the account?
+Customer: PIN is 8820, last four 6614.
+Agent: Thanks, you're verified. A blinking amber light on the HomeConnect router means it's searching for the network. Let's try restarting it. Can you unplug the power cable, wait 30 seconds, then plug it back in?
+Customer: Okay, unplugging now. [pause 30 seconds] Plugged back in.
+Agent: Great. It can take a minute or two to boot. What color is the light now?
+Customer: It's still blinking amber.
+Agent: Okay, let's give it one more full restart to be sure, since that fixes most cases. Unplug it again for 30 seconds.
+Customer: Alright. [pause 30 seconds] It's plugged in again... and it's solid green now.
+Agent: Solid green means the connection is healthy. Can you try loading a web page for me?
+Customer: Yes, it's loading fine. Thanks.
+Agent: Wonderful. To recap, we restarted the router twice and it's now connected. If the light turns red or it drops again, call us back and we'll send a technician. Is there anything else I can help you with today?
+Customer: No, that's it.
+Agent: Thank you for choosing Nextel. Have a great day.

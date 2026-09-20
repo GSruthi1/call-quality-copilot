@@ -1,0 +1,19 @@
+NEXTEL COMMUNICATIONS - REQUIRED CALL OPENING, CLOSING AND CONDUCT STANDARDS (Rev. 3.0)
+
+## Required call opening
+Every call must open with all four elements, in this order: (1) "Thank you for calling Nextel Communications", (2) the agent's first name, (3) the recording disclosure "this call may be recorded for quality and training purposes", and (4) an open question such as "How can I help you today?". Skipping the recording disclosure is a compliance miss, not just a script miss.
+
+## Required call closing
+Every call must close with all of the following: a brief recap of what was done or what will happen next, the question "Is there anything else I can help you with today?", and the sign-off "Thank you for choosing Nextel. Have a great day." Agents must not end a call before the customer has confirmed nothing else is needed.
+
+## Empathy standard
+When a customer expresses frustration, anger, worry, or disappointment, the agent must acknowledge the emotion in their own words before moving to a solution, for example "I understand how frustrating that must be." Jumping straight to troubleshooting, or arguing with the customer, does not meet the standard. Agents must remain polite and must never blame, mock, interrupt, or talk down to a customer.
+
+## Hold and dead air etiquette
+Agents must ask permission before placing a customer on hold and state the reason. A hold should not exceed 2 minutes without the agent returning to the line to update the customer. Silence longer than 10 seconds during a live call must be explained ("I'm pulling up your account now"). When returning from hold, thank the customer for waiting.
+
+## Efficiency standard
+Agents should not ask for information the customer has already provided, repeat the same explanation more than once unless the customer asks, or go off-topic. Target handle time for a standard billing or plan question is under 10 minutes.
+
+## Ownership language
+Agents should use ownership language ("I will take care of that", "Here is what I am going to do") and avoid deflecting phrases such as "that's not my department" or "there's nothing I can do."

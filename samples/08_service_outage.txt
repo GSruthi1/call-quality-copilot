@@ -1,0 +1,14 @@
+Agent: Yeah, support.
+Customer: Hi, my phone hasn't had service since yesterday morning. I can't make calls at all. I work from my phone, this is a real problem.
+Agent: Did you restart it?
+Customer: Yes, of course I restarted it. Multiple times. I've been without service for over a day. Can you check if there's an outage?
+Agent: Look, I can't help you if you're going to get snippy with me. Restart it again.
+Customer: I'm not being snippy, I'm upset. This is costing me money. Are you going to look at my account?
+Agent: Fine. Everybody says it's an emergency. What's your number?
+Customer: 555-0142. Don't you need to verify me or something?
+Agent: I don't need to do anything. Number's fine. Yeah, I see it. No outage on my screen. So it's probably your phone. Buy a new one.
+Customer: That doesn't make sense, my neighbors are also out. I'd like to talk to a supervisor please.
+Agent: A supervisor's going to tell you the same thing. Not my problem if your phone is junk.
+Customer: I'm asking again. I want a supervisor.
+Agent: There's nobody available. Call back later. Have a nice day, whatever.
+Customer: Hello? Hello?

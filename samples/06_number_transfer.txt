@@ -1,0 +1,15 @@
+Agent: Thank you for calling Nextel Communications, my name is Chris. This call may be recorded for quality and training purposes. How can I help you today?
+Customer: I want to move my number over from another carrier. How does that work?
+Agent: Sure, happy to help with that. Before we start I have to verify you. What's your account PIN and last four of the SSN?
+Customer: PIN is 2288 and last four 4410.
+Agent: Thank you. Could you give me your PIN again? I want to make sure I typed it correctly.
+Customer: It's 2288, same as I just said.
+Agent: Right, sorry about that. Let me pull up the transfer tool. [silence 15 seconds]
+Customer: Hello? Are you still there?
+Agent: Yes, still here, thanks for your patience. Number transfers are free and normally complete within 24 hours. You'll need the account number and transfer PIN from your old carrier.
+Customer: Okay. I have those. Can you start it?
+Agent: I can. Just so I have it right, number transfers are free, and they normally take about 24 hours. What's the number you want to move?
+Customer: 555-0163.
+Agent: Thanks. It's submitted, and it should complete within 24 hours. To recap: the transfer is free, and you'll get a text when it's done. Is there anything else I can help you with today?
+Customer: No, that's all.
+Agent: Thank you for choosing Nextel. Have a great day.
