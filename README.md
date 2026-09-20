@@ -16,11 +16,14 @@ flowchart LR
     P --> R["rag_check<br/>ChromaDB search,<br/>then policy audit"]
     KB[("kb/ policy docs<br/>local embeddings")] --> R
     R --> S["score_agent<br/>5 scores (Pydantic)<br/>+ needs_review flag"]
-    S --> C["generate_coaching<br/>grounded in scores,<br/>findings and policy"]
+    S -->|"flagged"| H["human_review<br/>graph pauses until a<br/>reviewer confirms or edits"]
+    S -->|"not flagged"| C
+    H --> C["generate_coaching<br/>grounded in final scores,<br/>findings and policy"]
     C --> UI["Gradio UI<br/>scores, coaching,<br/>review banner"]
 ```
 
-The four nodes run in a LangGraph `StateGraph` over one typed state:
+The pipeline runs in a LangGraph `StateGraph` over one typed state. Four core nodes always run; a fifth,
+`human_review`, runs only for flagged calls:
 
 ```python
 class State(TypedDict):
@@ -30,6 +33,7 @@ class State(TypedDict):
     scores: dict          # 5 dimensions, 1-5 each
     coaching: list        # 2-3 specific recommendations
     needs_review: bool    # HITL flag
+    review: dict          # the human reviewer's decision (set by human_review)
 ```
 
 | Node | What it does |
@@ -37,13 +41,22 @@ class State(TypedDict):
 | `parse_transcript` | Splits `Agent:` / `Customer:` turns and extracts key moments (emotion, refund or billing talk, escalation requests, recording disclosure, verification, promises, dead air) plus stats such as repeated sentences and repeated PIN requests. Plain Python, no LLM. |
 | `rag_check` | Embeds the key moments and agent turns, searches a ChromaDB index of `kb/`, then asks Claude which of the retrieved policies the agent broke. Output: findings with quote, turn number and severity. |
 | `score_agent` | One structured-output call into a Pydantic model: `empathy`, `accuracy`, `resolution`, `efficiency`, `script_adherence`, each an integer 1-5 with a rubric in its `Field` description. Sets `needs_review`. |
-| `generate_coaching` | 2-3 specific recommendations grounded in the scores, the findings and the retrieved policy text. |
+| `human_review` | Runs only for flagged calls. Uses LangGraph's `interrupt` to pause the graph; a reviewer confirms or edits the scores, and the run resumes. The state keeps what the model said, what the human decided, and their note. |
+| `generate_coaching` | 2-3 specific recommendations grounded in the final scores, the findings, the retrieved policy text and the reviewer's note. |
 
-### Human-in-the-loop rule
+### Human-in-the-loop
 
-`needs_review` is set when **any score is below 2** (a severe failure) or the **average is above 4.5** (a call that
-looks too perfect). LangGraph edges can only route, not write state, so the rule lives in `needs_human_review()`
-and is applied at the end of `score_agent`.
+`score_agent` sets `needs_review` when **any score is below 2** (a severe failure) or the **average is above 4.5**
+(a call that looks too perfect). A conditional edge then routes on that flag:
+
+- **Not flagged:** straight to `generate_coaching`.
+- **Flagged:** to `human_review`, which calls LangGraph's `interrupt`. The graph checkpoints and stops. The UI shows the
+  model's scores, the policy findings and a reviewer panel (a 1-5 slider per dimension and a note). On submit the run
+  resumes, the final scores replace the model's, and coaching is generated from them. From the terminal,
+  `python main.py <file>` prompts for the review instead.
+
+Reviewer scores are validated (whole numbers 1-5, all five dimensions) before the run resumes, and an invalid edit
+leaves the run paused.
 
 ## What this demonstrates
 
@@ -51,6 +64,7 @@ and is applied at the end of `score_agent`.
 - RAG that ends in a decision, not a summary: retrieval feeds a policy audit, whose findings feed scoring and coaching.
 - Structured outputs validated with Pydantic, with a retry, and errors that say what went wrong (out of credits,
   bad key, unparseable transcript).
+- A real human-in-the-loop step: a conditional edge, a checkpointed pause, and a resume with the reviewer's edits, not just a warning flag.
 - A human-review rule chosen from measured behaviour rather than assumed (see below).
 - Cost awareness: the default model was picked by comparing three Claude models on the same calls.
 
@@ -65,7 +79,7 @@ rubric, coach, and send outliers to a person. Six ways it maps to other domains:
 | **IT service management** | A ticket thread is the transcript. Runbooks and SLA rules are the knowledge base. Findings and scores drive escalation decisions. | Rubric (for example SLA adherence, correct resolution, escalation) and parser patterns. |
 | **Sales-call effectiveness** | Score discovery, objection handling and next-step commitment against a sales playbook. | Playbook as the knowledge base and a new rubric in the `AgentScores` model. |
 | **Healthcare care-coordination audits** | Audit outreach calls against care protocols and compliance rules. | Protocol documents. This demo does no PHI handling: real calls would need de-identification and a suitable agreement with the LLM provider. |
-| **Human-in-the-loop agent workflows** | A rule decides which outputs a person must confirm before they are trusted. | Here the rule sets a flag. A production version would pause the graph until a reviewer responds. |
+| **Human-in-the-loop agent workflows** | A rule decides which outputs a person must confirm before they are trusted. | The rule and the pause are already here; a production version would add a durable checkpointer and reviewer sign-in. |
 | **Client-specific deployments** | The knowledge base, model and API endpoint are configuration. | The five scoring dimensions and the rubric text live in one Pydantic model in `main.py`, so a new client means new documents plus a small code edit. |
 
 ## Results on the 10 sample calls
@@ -119,6 +133,9 @@ Costs are computed from measured token counts. Set `ANTHROPIC_MODEL` to change t
 
 - Ten synthetic calls and a fictional company. Scores were not compared with human QA reviewers.
 - Scores come from an LLM and can move by a point between runs and models, especially on borderline calls.
+- Paused reviews live in server memory (an in-memory checkpointer). A restart loses them, and there is no reviewer
+  sign-in. A production version would use a durable checkpointer and authentication.
+- The pipeline is a single sequence with one branch, not several cooperating agents.
 - Input is typed transcripts. Audio would need a speech-to-text step with speaker labels first.
 - No automated test suite is shipped; verification used stubbed and live runs kept outside the repo.
 
@@ -129,7 +146,7 @@ python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 export ANTHROPIC_API_KEY=sk-ant-...
 python app.py                                   # Gradio UI at http://127.0.0.1:7860
-python main.py samples/01_billing_dispute.txt   # or run the pipeline from the CLI
+python main.py samples/08_service_outage.txt    # or run it from the terminal (prompts for the review)
 ```
 
 The Chroma index is built on first use in `.chroma/` and rebuilt automatically when `kb/` changes. The embedding

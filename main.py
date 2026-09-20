@@ -1,6 +1,9 @@
 """Call Quality Copilot - LangGraph pipeline.
 
-parse_transcript -> rag_check -> score_agent -> generate_coaching
+parse_transcript -> rag_check -> score_agent -> (human_review, only if flagged) -> generate_coaching
+
+A flagged call pauses the graph at human_review (LangGraph interrupt) until a reviewer confirms or edits the
+scores; only then does coaching run.
 
 Run from the CLI:  python main.py samples/01_billing_dispute.txt
 """
@@ -9,6 +12,7 @@ import json
 import os
 import re
 import sys
+import uuid
 from difflib import SequenceMatcher
 from functools import lru_cache
 from pathlib import Path
@@ -19,7 +23,9 @@ from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
+from langgraph.types import Command, interrupt
 from pydantic import BaseModel, Field, ValidationError
 
 BASE_DIR = Path(__file__).parent
@@ -46,6 +52,7 @@ class State(TypedDict):
     scores: dict          # 5 dimensions, 1-5 each
     coaching: list        # 2-3 specific recommendations
     needs_review: bool    # HITL flag
+    review: dict          # human reviewer's decision (set by human_review)
 
 
 # --------------------------------------------------------------------------- #
@@ -392,6 +399,48 @@ def score_agent(state: State) -> dict:
 
 
 # --------------------------------------------------------------------------- #
+# Human-in-the-loop: human_review (runs only for flagged calls)
+# --------------------------------------------------------------------------- #
+
+def validate_scores(scores: dict) -> dict:
+    """Check a reviewer-supplied score set: all five dimensions, integers 1-5."""
+    if set(scores) != set(DIMENSIONS):
+        raise ValueError(f"Scores must cover exactly: {', '.join(DIMENSIONS)}")
+    cleaned = {}
+    for dim in DIMENSIONS:
+        value = scores[dim]
+        if isinstance(value, bool) or int(value) != value or not 1 <= int(value) <= 5:
+            raise ValueError(f"{dim} must be a whole number from 1 to 5, got {value!r}")
+        cleaned[dim] = int(value)
+    return cleaned
+
+
+def human_review(state: State) -> dict:
+    """Pause the graph until a reviewer confirms or edits the flagged scores."""
+    decision = interrupt({
+        "reason": "Outlier scores need a human to confirm them before coaching is generated.",
+        "scores": state["scores"],
+        "findings": state["rag_findings"],
+    })
+    original = state["scores"]
+    final = validate_scores(decision.get("scores") or original)
+    return {
+        "scores": final,
+        "review": {
+            "decision": "edited" if final != original else "approved",
+            "reviewer": decision.get("reviewer") or "human",
+            "note": (decision.get("note") or "").strip(),
+            "original_scores": original,
+        },
+    }
+
+
+def route_after_scoring(state: State) -> str:
+    """Conditional edge: flagged calls go to a human, the rest straight to coaching."""
+    return "human_review" if state["needs_review"] else "generate_coaching"
+
+
+# --------------------------------------------------------------------------- #
 # Node 4: generate_coaching
 # --------------------------------------------------------------------------- #
 
@@ -402,7 +451,7 @@ Write exactly 2 or 3 coaching recommendations for the agent (never more than 3),
 - be at most 3 sentences,
 - be consistent with the Nextel policy excerpts provided: never advise anything those policies forbid or do not require (for example, identity verification with the PIN and last four SSN digits is mandatory, so never suggest skipping it).
 Prioritise the lowest scores and any policy findings. If the call was excellent, say what to keep doing and how to make it repeatable.
-If the call is flagged for human review, make the first recommendation a note to the agent's supervisor on what to review; it counts toward the limit of 3."""
+If a human reviewer confirmed or adjusted the scores, treat the final scores as authoritative, respect the reviewer's note, and do not ask for another review."""
 
 
 def generate_coaching(state: State) -> dict:
@@ -413,7 +462,7 @@ def generate_coaching(state: State) -> dict:
         f"TRANSCRIPT:\n{_numbered_transcript(state['parsed'])}\n\n"
         f"SCORES (1-5): {json.dumps(state['scores'])}\n"
         f"POLICY FINDINGS:\n{findings_text}\n"
-        f"FLAGGED FOR HUMAN REVIEW: {state['needs_review']}"
+        f"HUMAN REVIEW: {json.dumps(state.get('review') or 'not required')}"
     )
     result = _structured(CoachingPlan, _COACH_SYSTEM, user)
     return {"coaching": result.recommendations[:3]}
@@ -428,32 +477,99 @@ def build_graph():
     graph.add_node("parse_transcript", parse_transcript)
     graph.add_node("rag_check", rag_check)
     graph.add_node("score_agent", score_agent)
+    graph.add_node("human_review", human_review)
     graph.add_node("generate_coaching", generate_coaching)
     graph.add_edge(START, "parse_transcript")
     graph.add_edge("parse_transcript", "rag_check")
     graph.add_edge("rag_check", "score_agent")
-    graph.add_edge("score_agent", "generate_coaching")
+    graph.add_conditional_edges(
+        "score_agent", route_after_scoring,
+        {"human_review": "human_review", "generate_coaching": "generate_coaching"},
+    )
+    graph.add_edge("human_review", "generate_coaching")
     graph.add_edge("generate_coaching", END)
-    return graph.compile()
+    # In-memory checkpointer: enough for a single-process demo. A production deployment would use a durable one.
+    return graph.compile(checkpointer=InMemorySaver())
 
 
 pipeline = build_graph()
 
 
-def analyze(transcript: str) -> State:
-    """Run the full pipeline on one transcript and return the final state."""
-    return pipeline.invoke({
+def _config(thread_id: str) -> dict:
+    return {"configurable": {"thread_id": thread_id}}
+
+
+def start_analysis(transcript: str) -> tuple[str, dict]:
+    """Run the pipeline. Returns (thread_id, result); a flagged call stops at human_review.
+
+    Use pending_review(result) to see whether the run is waiting for a reviewer.
+    """
+    thread_id = uuid.uuid4().hex
+    result = pipeline.invoke({
         "transcript": transcript,
         "parsed": {},
         "rag_findings": [],
         "scores": {},
         "coaching": [],
         "needs_review": False,
-    })
+        "review": {},
+    }, _config(thread_id))
+    return thread_id, result
+
+
+def is_waiting_for_review(thread_id: str) -> bool:
+    """True if this thread is paused at human_review (False once finished, or if the server restarted)."""
+    return pipeline.get_state(_config(thread_id)).next == ("human_review",)
+
+
+def pending_review(result: dict) -> dict | None:
+    """The payload shown to the reviewer if the run is paused at human_review, else None."""
+    interrupts = result.get("__interrupt__")
+    return interrupts[0].value if interrupts else None
+
+
+def resume_analysis(thread_id: str, decision: dict) -> dict:
+    """Continue a paused run. decision: {"scores": {...} (optional edits), "note": str, "reviewer": str}."""
+    if decision.get("scores"):
+        validate_scores(decision["scores"])  # fail before touching the paused run
+    return pipeline.invoke(Command(resume=decision), _config(thread_id))
+
+
+def analyze(transcript: str, reviewer=None) -> State:
+    """Run the whole pipeline. A flagged call is passed to reviewer(payload) -> decision.
+
+    Without a reviewer the flagged scores are approved as they are and the review is labelled "auto-approved",
+    which is fine for scripts but skips the point of the human step.
+    """
+    thread_id, result = start_analysis(transcript)
+    payload = pending_review(result)
+    if payload is None:
+        return result
+    if reviewer is None:
+        decision = {"scores": payload["scores"], "reviewer": "auto-approved", "note": "No reviewer attached."}
+    else:
+        decision = reviewer(payload)
+    return resume_analysis(thread_id, decision)
+
+
+def _cli_reviewer(payload: dict) -> dict:
+    """Terminal reviewer: Enter approves; 'dimension=score' pairs override, e.g. accuracy=3 efficiency=2."""
+    print("\nFLAGGED FOR HUMAN REVIEW:", payload["reason"])
+    print("Scores:", json.dumps(payload["scores"]))
+    for finding in payload["findings"]:
+        print(f"  [{finding['severity']}] {finding['policy']}: {finding['issue']}")
+    answer = input("Press Enter to approve, or type overrides (e.g. accuracy=3 efficiency=2): ").strip()
+    scores = dict(payload["scores"])
+    for pair in answer.split():
+        name, _, value = pair.partition("=")
+        if name in scores and value.isdigit():
+            scores[name] = int(value)
+    note = input("Note (optional): ").strip()
+    return {"scores": scores, "note": note, "reviewer": "cli"}
 
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         sys.exit("usage: python main.py <transcript.txt>")
-    final = analyze(Path(sys.argv[1]).read_text(encoding="utf-8"))
+    final = analyze(Path(sys.argv[1]).read_text(encoding="utf-8"), reviewer=_cli_reviewer if sys.stdin.isatty() else None)
     print(json.dumps({k: v for k, v in final.items() if k not in ("transcript", "parsed")}, indent=2))
