@@ -134,7 +134,8 @@ Costs are computed from measured token counts. Set `ANTHROPIC_MODEL` to change t
 - Ten synthetic calls and a fictional company. Scores were not compared with human QA reviewers.
 - Scores come from an LLM and can move by a point between runs and models, especially on borderline calls.
 - Paused reviews live in server memory (an in-memory checkpointer). A restart loses them, and there is no reviewer
-  sign-in. A production version would use a durable checkpointer and authentication.
+  sign-in. A production version would swap the in-memory checkpointer for PostgreSQL or Redis, which LangGraph
+  supports natively. It would also need reviewer authentication.
 - The pipeline is a single sequence with one branch, not several cooperating agents.
 - Input is typed transcripts. Audio would need a speech-to-text step with speaker labels first.
 - No automated test suite is shipped; verification used stubbed and live runs kept outside the repo.
@@ -169,4 +170,5 @@ requirements.txt
 Not hosted. Hugging Face Spaces now requires a PRO subscription for Gradio apps, and the roughly 650 MB peak
 memory exceeds the 512 MB free tiers on other hosts. The `Dockerfile` runs it anywhere with more memory. To put it
 on a Hugging Face Space, add the Space YAML block (`sdk: gradio`, `python_version: "3.11"`, `app_file: app.py`) to
-the top of this README and set `ANTHROPIC_API_KEY` as a Space secret.
+the top of this README and set `ANTHROPIC_API_KEY` as a Space secret. The architecture is deployment-ready — the only
+missing piece is a hosting tier with ≥ 1 GB RAM.
