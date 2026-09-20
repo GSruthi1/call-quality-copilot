@@ -3,6 +3,7 @@ import os
 import threading
 from pathlib import Path
 
+import anthropic
 import gradio as gr
 
 from main import DIMENSIONS, REVIEW_HIGH, REVIEW_LOW, analyze
@@ -70,7 +71,15 @@ def run_analysis(transcript: str):
         result = analyze(transcript)
     except ValueError as exc:  # unparseable transcript
         raise gr.Error(str(exc)) from exc
-    except Exception as exc:  # noqa: BLE001 - surface API/network errors in the UI
+    except anthropic.AuthenticationError as exc:
+        raise gr.Error("Anthropic rejected the API key. Check ANTHROPIC_API_KEY.") from exc
+    except anthropic.BadRequestError as exc:
+        if "credit balance" in str(exc).lower():
+            raise gr.Error("The Anthropic account is out of credits. Add credits in the Anthropic console (Plans & Billing), then try again.") from exc
+        raise gr.Error(f"Analysis failed: {exc}") from exc
+    except anthropic.RateLimitError as exc:
+        raise gr.Error("Anthropic is rate-limiting requests. Wait a minute and try again.") from exc
+    except Exception as exc:  # noqa: BLE001 - surface other API/network errors in the UI
         raise gr.Error(f"Analysis failed: {exc}") from exc
 
     scores = result["scores"]
