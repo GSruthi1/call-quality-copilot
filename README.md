@@ -168,7 +168,7 @@ requirements.txt
 ## Deployment note
 
 Not hosted. Hugging Face Spaces now requires a PRO subscription for Gradio apps, and the roughly 650 MB peak
-memory exceeds the 512 MB free tiers on other hosts. The `Dockerfile` runs it anywhere with more memory. To put it
-on a Hugging Face Space, add the Space YAML block (`sdk: gradio`, `python_version: "3.11"`, `app_file: app.py`) to
-the top of this README and set `ANTHROPIC_API_KEY` as a Space secret. The architecture is deployment-ready — the only
-missing piece is a hosting tier with ≥ 1 GB RAM.
+memory exceeds the 512 MB free tiers on other hosts. The app runs anywhere with roughly 1 GB of RAM; a Dockerfile is
+included but has not been built or deployed. To put it on a Hugging Face Space, add the Space YAML block
+(`sdk: gradio`, `python_version: "3.11"`, `app_file: app.py`) to the top of this README and set `ANTHROPIC_API_KEY` as
+a Space secret.
