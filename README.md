@@ -56,13 +56,17 @@ and is applied at the end of `score_agent`.
 
 ## Where it applies
 
-- **Contact-centre QA:** score a sample of calls consistently instead of a few hand-reviewed ones.
-- **Compliance monitoring** in regulated industries: identity verification, recording disclosure, unauthorized
-  promises, mishandled regulator threats.
-- **Agent coaching:** specific, quote-level feedback tied to the exact turn.
-- **Supervisor triage:** only outlier calls go to a person.
+The pipeline shape is the reusable part: parse the conversation, audit it against a knowledge base, score it on a
+rubric, coach, and send outliers to a person. Six ways it maps to other domains:
 
-Swap the files in `kb/` for a real company's policies and the same pipeline audits against them.
+| Domain | How the same pipeline maps | What would change |
+|---|---|---|
+| **Contact-centre quality management** | Score calls consistently, tie coaching to exact turns, let supervisors review only outliers. | Real policy documents; speech-to-text with speaker labels for audio. |
+| **IT service management** | A ticket thread is the transcript. Runbooks and SLA rules are the knowledge base. Findings and scores drive escalation decisions. | Rubric (for example SLA adherence, correct resolution, escalation) and parser patterns. |
+| **Sales-call effectiveness** | Score discovery, objection handling and next-step commitment against a sales playbook. | Playbook as the knowledge base and a new rubric in the `AgentScores` model. |
+| **Healthcare care-coordination audits** | Audit outreach calls against care protocols and compliance rules. | Protocol documents. This demo does no PHI handling: real calls would need de-identification and a suitable agreement with the LLM provider. |
+| **Human-in-the-loop agent workflows** | A rule decides which outputs a person must confirm before they are trusted. | Here the rule sets a flag. A production version would pause the graph until a reviewer responds. |
+| **Client-specific deployments** | The knowledge base, model and API endpoint are configuration. | The five scoring dimensions and the rubric text live in one Pydantic model in `main.py`, so a new client means new documents plus a small code edit. |
 
 ## Results on the 10 sample calls
 
