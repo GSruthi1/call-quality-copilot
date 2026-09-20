@@ -86,9 +86,16 @@ Score order: empathy / accuracy / resolution / efficiency / script adherence.
 Samples 01, 08 and 09 were written to trigger review, and they do. 05 and 10 flag too, because Claude gave a 1 on
 one dimension. Scores come from the LLM and can vary between runs and models, especially for borderline calls.
 
-## Deploy to Hugging Face Spaces
+## Deploy
 
-1. Create a new Space, SDK **Gradio**, and push this folder (the YAML block at the top of this README is the
-   Space configuration).
-2. In **Settings -> Variables and secrets**, add a secret named `ANTHROPIC_API_KEY`.
-3. Every visitor's analysis uses that key, so consider keeping the Space private or setting a spend limit.
+**Railway** (used for the live demo): `Dockerfile` and `railway.json` are included. Create a Railway project
+from this folder (`railway init`, then `railway up`), set the service variables `ANTHROPIC_API_KEY` and
+`PORT=8000`, and generate a domain. The app binds to `$PORT` automatically.
+
+**Hugging Face Spaces**: the YAML block at the top of this README is the Space configuration (Gradio SDK,
+Python 3.11). Push the folder to a Gradio Space and add `ANTHROPIC_API_KEY` under
+**Settings -> Variables and secrets**. Note that Hugging Face currently requires a PRO subscription to host
+Gradio Spaces on its free CPU tier.
+
+Either way, every visitor's analysis is billed to that API key, so keep the deployment private or set a spend
+limit in the Anthropic console.

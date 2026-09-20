@@ -1,10 +1,12 @@
 """Call Quality Copilot - Gradio UI."""
 import os
+import threading
 from pathlib import Path
 
 import gradio as gr
 
 from main import DIMENSIONS, REVIEW_HIGH, REVIEW_LOW, analyze
+from main import _get_vectorstore as get_vectorstore
 
 SAMPLES_DIR = Path(__file__).parent / "samples"
 
@@ -109,5 +111,19 @@ with gr.Blocks(title="Call Quality Copilot") as demo:
     sample.change(load_sample, inputs=sample, outputs=transcript)
     analyze_btn.click(run_analysis, inputs=transcript, outputs=[banner, scores_table, coaching, findings])
 
+def _warm_up() -> None:
+    """Build the knowledge-base index in the background so the first Analyze is not slow."""
+    try:
+        get_vectorstore()
+    except Exception:  # noqa: BLE001 - the real error surfaces on the first Analyze
+        pass
+
+
 if __name__ == "__main__":
-    demo.launch(css=BANNER_CSS)
+    threading.Thread(target=_warm_up, daemon=True).start()
+    port = os.getenv("PORT")  # set by hosting platforms such as Railway
+    demo.launch(
+        server_name="0.0.0.0" if port else None,
+        server_port=int(port) if port else None,
+        css=BANNER_CSS,
+    )
