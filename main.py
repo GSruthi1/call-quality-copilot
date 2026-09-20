@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).parent
 KB_DIR = BASE_DIR / "kb"
 CHROMA_DIR = BASE_DIR / ".chroma"
 
-LLM_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-opus-5")
+LLM_MODEL = os.getenv("ANTHROPIC_MODEL", "claude-haiku-4-5")
 # Anthropic has no embeddings API, so the knowledge base is embedded locally with Chroma's
 # built-in ONNX all-MiniLM-L6-v2 model (downloaded once on first use, no API key needed).
 EMBEDDING_MODEL = "chroma-default-all-MiniLM-L6-v2"

@@ -58,7 +58,8 @@ python app.py                              # Gradio UI at http://127.0.0.1:7860
 python main.py samples/01_billing_dispute.txt   # or run the pipeline from the CLI
 ```
 
-Optional: `ANTHROPIC_MODEL` (default `claude-opus-5`; `claude-sonnet-5` is a cheaper, faster choice).
+Optional: `ANTHROPIC_MODEL` (default `claude-haiku-4-5`, about $0.013 per analysis). `claude-sonnet-5` (about
+$0.04) or `claude-opus-5` are more discriminating but cost 3-10x more.
 Scoring and coaching use Claude with Pydantic structured outputs. Anthropic has no embeddings API, so the
 knowledge base is embedded locally with Chroma's built-in MiniLM model (downloaded once on first run, no key
 needed). The Chroma index is built on first use in `.chroma/` and rebuilt automatically when `kb/` changes.
@@ -81,7 +82,9 @@ needed). The Chroma index is built on first use in `.chroma/` and rebuilt automa
 | 09 | Third-party caller: no verification, $200 credit, false guarantee, reads full card number | accuracy 1: **flagged** |
 | 10 | Cancellation and FCC threat, agent never escalates | resolution 1: **flagged** |
 
-Score order: empathy / accuracy / resolution / efficiency / script adherence.
+Score order: empathy / accuracy / resolution / efficiency / script adherence. Cheaper models score slightly
+differently: on samples 02, 07, 08 and 09, Sonnet 5 and Haiku 4.5 reproduced the same review flags as Opus 5, but
+Haiku scores efficiency more leniently (sample 08: 4 instead of 2).
 
 Samples 01, 08 and 09 were written to trigger review, and they do. 05 and 10 flag too, because Claude gave a 1 on
 one dimension. Scores come from the LLM and can vary between runs and models, especially for borderline calls.
