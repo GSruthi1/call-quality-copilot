@@ -78,7 +78,7 @@ class AgentScores(BaseModel):
 
 
 class CoachingPlan(BaseModel):
-    recommendations: list[str] = Field(min_length=2, max_length=3, description="2-3 specific, actionable coaching recommendations for the agent, most important first.")
+    recommendations: list[str] = Field(min_length=2, description="Exactly 2 or 3 specific, actionable coaching recommendations for the agent, most important first. Never more than 3.")
 
 
 # --------------------------------------------------------------------------- #
@@ -100,7 +100,9 @@ class LocalEmbeddings(Embeddings):
 
 @lru_cache(maxsize=1)
 def _get_client() -> anthropic.Anthropic:
-    return anthropic.Anthropic()  # reads ANTHROPIC_API_KEY
+    # The URL is pinned on purpose: some dev setups export ANTHROPIC_BASE_URL (e.g. a local model
+    # server), which would silently redirect this app's calls. Override with CQC_ANTHROPIC_BASE_URL.
+    return anthropic.Anthropic(base_url=os.getenv("CQC_ANTHROPIC_BASE_URL", "https://api.anthropic.com"))
 
 
 @lru_cache(maxsize=1)
@@ -326,6 +328,10 @@ def retrieve_policies(parsed: dict) -> list[Document]:
     return [doc for _, doc in ranked[:MAX_CHUNKS]]
 
 
+def _format_policies(docs: list[Document]) -> str:
+    return "\n\n---\n\n".join(f"[{d.metadata['source']} > {d.metadata['section']}]\n{d.page_content}" for d in docs)
+
+
 _RAG_SYSTEM = """You are a compliance auditor for Nextel Communications, a telecom company.
 You are given (1) policy excerpts retrieved from the knowledge base and (2) a call transcript with numbered turns.
 List every place the AGENT violated, or failed to follow, one of the retrieved policies. Rules:
@@ -339,8 +345,7 @@ List every place the AGENT violated, or failed to follow, one of the retrieved p
 def rag_check(state: State) -> dict:
     """Retrieve relevant policies from ChromaDB and check the agent's behaviour against them."""
     parsed = state["parsed"]
-    docs = retrieve_policies(parsed)
-    policies = "\n\n---\n\n".join(f"[{d.metadata['source']} > {d.metadata['section']}]\n{d.page_content}" for d in docs)
+    policies = _format_policies(retrieve_policies(parsed))
     stats = parsed["stats"]
     user = (
         f"POLICY EXCERPTS:\n{policies}\n\n"
@@ -391,18 +396,20 @@ def score_agent(state: State) -> dict:
 # --------------------------------------------------------------------------- #
 
 _COACH_SYSTEM = """You are a supportive contact-centre coach for Nextel Communications.
-Write 2-3 coaching recommendations for the agent, most important first. Each one must:
+Write exactly 2 or 3 coaching recommendations for the agent (never more than 3), most important first. Each one must:
 - target a specific moment in the call (quote or paraphrase what the agent said),
 - say what to do instead, with example wording the agent can use,
-- be at most 3 sentences.
+- be at most 3 sentences,
+- be consistent with the Nextel policy excerpts provided: never advise anything those policies forbid or do not require (for example, identity verification with the PIN and last four SSN digits is mandatory, so never suggest skipping it).
 Prioritise the lowest scores and any policy findings. If the call was excellent, say what to keep doing and how to make it repeatable.
-If the call is flagged for human review, the first recommendation should tell the agent's supervisor what to review."""
+If the call is flagged for human review, make the first recommendation a note to the agent's supervisor on what to review; it counts toward the limit of 3."""
 
 
 def generate_coaching(state: State) -> dict:
     """Coaching recommendations grounded in the scores and RAG findings."""
     findings_text = "\n".join(f"- [{f['severity']}] {f['issue']} (turn {f['turn']})" for f in state["rag_findings"]) or "None."
     user = (
+        f"NEXTEL POLICY EXCERPTS:\n{_format_policies(retrieve_policies(state['parsed']))}\n\n"
         f"TRANSCRIPT:\n{_numbered_transcript(state['parsed'])}\n\n"
         f"SCORES (1-5): {json.dumps(state['scores'])}\n"
         f"POLICY FINDINGS:\n{findings_text}\n"
